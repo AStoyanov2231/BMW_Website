@@ -1,0 +1,141 @@
+.hero {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+}
+
+.hero-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.6; /* Fallback opacity if image exists */
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(10,10,10,0.4) 0%, rgba(0,0,0,0.9) 100%),
+                linear-gradient(45deg, rgba(0, 102, 177, 0.2), transparent);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+    letter-spacing: 5px;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    color: var(--text-secondary);
+    text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.about {
+    padding: 80px 20px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.about-text h2 {
+    color: var(--bmw-blue);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.about-text h3 {
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.about-text h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: var(--neon-accent);
+}
+
+.content-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border: 1px solid #333;
+    box-shadow: 0 0 30px rgba(0, 102, 177, 0.2);
+    border: 1px solid var(--bmw-blue);
+}
+
+.achievements {
+    background: #0f0f0f;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 4px;
+    min-width: 200px;
+    margin: 10px;
+    border-bottom: 3px solid var(--bmw-blue);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.stat-card .number {
+    display: block;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+}
+
+.stat-card .label {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+}

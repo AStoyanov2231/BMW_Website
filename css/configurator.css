@@ -1,0 +1,240 @@
+/* Re-writing configurator.css properly to avoid empty file issue if imports fail or order matters */
+.configurator-ui {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0;
+    min-height: calc(100vh - 100px); /* Adjust for header height */
+    background: #050505;
+}
+
+.car-preview-area {
+    position: relative;
+    background: radial-gradient(circle at center, #2a2a2a 0%, #000 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.car-preview-visual {
+    width: 80%;
+    max-width: 800px;
+    height: 400px;
+    background: transparent; 
+    border-radius: 10px; 
+    position: relative;
+    transition: all 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255,255,255,0.1);
+    font-size: 5rem;
+    font-family: var(--font-heading);
+    z-index: 2;
+    overflow: hidden; /* Keep image inside rounded corners if background used */
+}
+
+/* Ensure image fits nicely */
+.car-img-display {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.fallback-text {
+    position: absolute;
+    z-index: 1;
+}
+
+.car-preview-visual::after {
+    position: absolute;
+    bottom: -60px;
+    font-size: 8rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    z-index: 0;
+    white-space: nowrap;
+}
+
+/* Simulated lighting */
+.light-source {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 1;
+}
+
+.controls-panel {
+    background: rgba(15, 15, 15, 0.95);
+    border-left: 1px solid #333;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    backdrop-filter: blur(20px);
+    overflow-y: auto;
+    max-height: calc(100vh - 100px); /* Adjusted for header */
+}
+
+.panel-section h3 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+
+.color-selector {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #555;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.color-option.active {
+    border-color: #fff;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+.color-option[data-color="black"] { background: #111; }
+.color-option[data-color="white"] { background: #eee; }
+.color-option[data-color="blue"] { background: #001f3f; }
+.color-option[data-color="red"] { background: #85144b; }
+
+/* Interior Selector Styles */
+.interior-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.interior-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: #222;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.interior-option:hover, .interior-option.active {
+    background: #333;
+    border-color: var(--bmw-blue);
+}
+
+.interior-option.active {
+    box-shadow: 0 0 10px rgba(0, 102, 177, 0.2);
+}
+
+.interior-preview {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #555;
+}
+
+.specs-overlay {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    display: flex;
+    gap: 40px;
+    z-index: 3;
+}
+
+.spec-item {
+    text-align: left;
+}
+
+.spec-value {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+.spec-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.price-tag {
+    margin-top: auto;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.price-value {
+    color: var(--bmw-blue);
+    font-family: var(--font-heading);
+    transition: opacity 0.2s ease;
+}
+
+.sweeping {
+    animation: paintSweep 0.5s ease-in-out;
+}
+
+@keyframes paintSweep {
+    0% { filter: brightness(1) blur(0px); opacity: 1; }
+    50% { filter: brightness(1.5) blur(5px); opacity: 0.7; }
+    100% { filter: brightness(1) blur(0px); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .configurator-ui {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .car-preview-visual {
+        height: 250px;
+        width: 90%;
+    }
+    .controls-panel {
+        max-height: none;
+    }
+    .specs-overlay {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        padding: 20px;
+        justify-content: center;
+        width: 100%;
+        background: rgba(0,0,0,0.5);
+    }
+}
