@@ -41,6 +41,8 @@
     font-weight: bold;
     font-family: var(--font-heading);
     letter-spacing: 2px;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .contact-form-section {
@@ -79,6 +81,7 @@
     font-family: var(--font-body);
     font-size: 1rem;
     transition: all 0.3s;
+    border-radius: 8px; /* Rounded edges for form fields */
 }
 
 .form-group input:focus,
@@ -101,5 +104,14 @@
 @media (max-width: 768px) {
     .contacts-wrapper {
         grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .contact-form-section {
+        padding: 20px;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
     }
 }

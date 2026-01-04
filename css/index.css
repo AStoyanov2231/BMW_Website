@@ -138,4 +138,23 @@
     .hero h1 {
         font-size: 2.5rem;
     }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .stats-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-card {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .content-img {
+        height: auto;
+        max-height: 300px;
+    }
 }

@@ -9,7 +9,7 @@
 
 .car-preview-area {
     position: relative;
-    background: radial-gradient(circle at center, #2a2a2a 0%, #000 100%);
+    background: #0a0a0a;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -21,8 +21,8 @@
     width: 80%;
     max-width: 800px;
     height: 400px;
-    background: transparent; 
-    border-radius: 10px; 
+    background: #111;
+    border-radius: 25px;
     position: relative;
     transition: all 0.5s ease;
     display: flex;
@@ -32,16 +32,16 @@
     font-size: 5rem;
     font-family: var(--font-heading);
     z-index: 2;
-    overflow: hidden; /* Keep image inside rounded corners if background used */
+    overflow: hidden;
 }
 
-/* Ensure image fits nicely */
 .car-img-display {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     transition: opacity 0.3s ease;
     z-index: 5;
+    border-radius: 25px;
 }
 
 .fallback-text {
@@ -59,17 +59,8 @@
     white-space: nowrap;
 }
 
-/* Simulated lighting */
 .light-source {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    z-index: 1;
+    display: none;
 }
 
 .controls-panel {
@@ -81,7 +72,7 @@
     gap: 30px;
     backdrop-filter: blur(20px);
     overflow-y: auto;
-    max-height: calc(100vh - 100px); /* Adjusted for header */
+    max-height: calc(100vh - 100px);
 }
 
 .panel-section h3 {
@@ -123,7 +114,6 @@
 .color-option[data-color="blue"] { background: #001f3f; }
 .color-option[data-color="red"] { background: #85144b; }
 
-/* Interior Selector Styles */
 .interior-selector {
     display: flex;
     flex-direction: column;
@@ -215,7 +205,6 @@
     100% { filter: brightness(1) blur(0px); opacity: 1; }
 }
 
-/* Responsive */
 @media (max-width: 900px) {
     .configurator-ui {
         grid-template-columns: 1fr;
@@ -236,5 +225,19 @@
         justify-content: center;
         width: 100%;
         background: rgba(0,0,0,0.5);
+    }
+}
+
+@media (max-width: 480px) {
+    .car-preview-visual {
+        height: 200px;
+    }
+    
+    .spec-value {
+        font-size: 1.8rem;
+    }
+    
+    .panel-header h2 {
+        font-size: 1.5rem;
     }
 }
