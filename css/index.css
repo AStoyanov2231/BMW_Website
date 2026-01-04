@@ -17,7 +17,7 @@
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    opacity: 0.6; /* Fallback opacity if image exists */
+    opacity: 0.6;
 }
 
 .video-overlay {

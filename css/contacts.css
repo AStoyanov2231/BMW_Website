@@ -81,7 +81,7 @@
     font-family: var(--font-body);
     font-size: 1rem;
     transition: all 0.3s;
-    border-radius: 8px; /* Rounded edges for form fields */
+    border-radius: 8px;
 }
 
 .form-group input:focus,

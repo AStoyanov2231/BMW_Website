@@ -1,29 +1,61 @@
-// script.js - Updated with Interior Switching
+/**
+ * BMW Digital Studio Main Script
+ */
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("BMW Configurator Loaded");
-
-    // 1. Navigation Highlighting
-    const currentLocation = location.href;
-    const menuItems = document.querySelectorAll('.nav-links a');
-    
-    menuItems.forEach(item => {
-        if(item.href === currentLocation || (item.getAttribute('href') === 'index.html' && currentLocation.endsWith('/'))) {
-            item.classList.add('active');
+const CONFIG = {
+    basePrice: 185000,
+    prices: {
+        color: { blue: 2400, red: 2400 },
+        interior: { orange: 3500 }
+    },
+    images: {
+        exterior: {
+            black: 'assets/car-black.png',
+            white: 'assets/car-white.png',
+            blue: 'assets/car-blue.png',
+            red: 'assets/car-red.png'
+        },
+        interior: {
+            black: 'assets/interior-black.jpg',
+            silver: 'assets/interior-silver.jpg',
+            orange: 'assets/interior-orange.jpg'
         }
-    });
+    }
+};
 
-    // Mobile Navigation
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
+const Utils = {
+    formatPrice: (price) => `${price.toLocaleString('bg-BG').replace(',', ' ')} лв.`
+};
 
-    if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
+const Navigation = {
+    init() {
+        this.highlightActiveLink();
+        this.setupMobileMenu();
+    },
+
+    highlightActiveLink() {
+        const currentPath = location.pathname.split('/').pop() || 'index.html';
+        const links = document.querySelectorAll('.nav-links a');
+        
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath) link.classList.add('active');
+        });
+    },
+
+    setupMobileMenu() {
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (!hamburger || !navLinks) return;
+
+        const toggleMenu = () => {
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('active');
-        });
+        };
+
+        hamburger.addEventListener('click', toggleMenu);
         
-        // Close menu when a link is clicked
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -31,149 +63,121 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+};
 
-    // 2. Configurator Logic
-    const colorOptions = document.querySelectorAll('.color-option');
-    const interiorOptions = document.querySelectorAll('.interior-option');
-    const carPreview = document.querySelector('.car-preview-visual');
-    const carImage = document.getElementById('car-image'); 
+const Configurator = {
+    state: {
+        color: 'black',
+        interior: 'black',
+        view: 'exterior'
+    },
     
-    // State
-    let currentBasePrice = 185000;
-    let colorPrice = 0;
-    let interiorPrice = 0;
-    let currentView = 'exterior'; // 'exterior' or 'interior'
-    let selectedColor = 'black';
-    let selectedInterior = 'black';
-    
-    // Config Data
-    const exteriorImages = {
-        'black': 'assets/car-black.png',
-        'white': 'assets/car-white.png',
-        'blue': 'assets/car-blue.png',
-        'red': 'assets/car-red.png'
-    };
+    elements: {},
 
-    const interiorImages = {
-        'black': 'assets/interior-black.jpg',
-        'silver': 'assets/interior-silver.jpg',
-        'orange': 'assets/interior-orange.jpg'
-    };
-
-        // Fallback Color Map (if images fail or are missing, we can still tint the background as fallback)
-        const exteriorColors = {
-            'black': 'linear-gradient(135deg, #111 0%, #333 100%)',
-            'white': 'linear-gradient(135deg, #e0e0e0 0%, #ffffff 100%)',
-            'blue': 'linear-gradient(135deg, #001f3f 0%, #0074D9 100%)',
-            'red': 'linear-gradient(135deg, #85144b 0%, #FF4136 100%)'
+    init() {
+        // Cache elements
+        this.elements = {
+            colorOptions: document.querySelectorAll('.color-option'),
+            interiorOptions: document.querySelectorAll('.interior-option'),
+            preview: document.querySelector('.car-preview-visual'),
+            image: document.getElementById('car-image'),
+            priceDisplay: document.getElementById('total-price')
         };
 
-    // Color Selection (Exterior)
-    if(colorOptions.length > 0) {
-        colorOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // UI Update
-                colorOptions.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Logic Update
-                const color = this.getAttribute('data-color');
-                selectedColor = color;
-                
-                // Switch view to exterior if we are in interior mode
-                if (currentView === 'interior') {
-                    // Reset interior UI selection visually? Maybe not, keep selection but show exterior.
-                }
-                currentView = 'exterior';
+        if (!this.elements.preview) return; 
 
-                updateCarView();
-                
-                // Pricing Logic
-                const newColorPrice = (color === 'blue' || color === 'red') ? 2400 : 0;
-                updatePrice(newColorPrice, interiorPrice);
-            });
+        this.bindEvents();
+        this.updateView();
+    },
+
+    bindEvents() {
+        this.elements.colorOptions.forEach(opt => {
+            opt.addEventListener('click', () => this.handleColorSelect(opt));
         });
-    }
 
-    // Interior Selection
-    if(interiorOptions.length > 0) {
-        interiorOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // UI Update
-                interiorOptions.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-
-                // Logic
-                const interior = this.getAttribute('data-interior');
-                selectedInterior = interior;
-                currentView = 'interior'; // Switch to interior view
-
-                updateCarView();
-
-                // Pricing Logic (Example: Orange is expensive)
-                const newInteriorPrice = (interior === 'orange') ? 3500 : 0;
-                updatePrice(colorPrice, newInteriorPrice);
-            });
+        this.elements.interiorOptions.forEach(opt => {
+            opt.addEventListener('click', () => this.handleInteriorSelect(opt));
         });
-    }
+    },
 
-    function updateCarView() {
-        if(!carPreview) return;
+    handleColorSelect(element) {
+        this.updateUISelection(this.elements.colorOptions, element);
+        
+        this.state.color = element.dataset.color;
+        this.state.view = 'exterior';
+        
+        this.updateView();
+    },
 
-        // Animation start
-        carPreview.classList.add('sweeping');
+    handleInteriorSelect(element) {
+        this.updateUISelection(this.elements.interiorOptions, element);
+        
+        this.state.interior = element.dataset.interior;
+        this.state.view = 'interior';
+        
+        this.updateView();
+    },
 
+    updateUISelection(group, activeElement) {
+        group.forEach(el => el.classList.remove('active'));
+        activeElement.classList.add('active');
+    },
+
+    updateView() {
+        const { color, interior, view } = this.state;
+        const { preview, image } = this.elements;
+
+        // Animate
+        preview.classList.add('sweeping');
+        
         setTimeout(() => {
-            if (carImage) {
-                let newSrc = '';
-                
-                if (currentView === 'exterior') {
-                    newSrc = exteriorImages[selectedColor];
-                } else {
-                    newSrc = interiorImages[selectedInterior];
-                }
+            const src = view === 'exterior' 
+                ? CONFIG.images.exterior[color] 
+                : CONFIG.images.interior[interior];
 
-                if (newSrc) {
-                    carImage.src = newSrc;
-                    carImage.style.display = 'block';
-                }
+            if (image && src) {
+                image.src = src;
+                image.style.display = 'block';
             }
+            this.updatePrice();
         }, 250);
 
-        setTimeout(() => {
-            carPreview.classList.remove('sweeping');
-        }, 500);
-    }
+        setTimeout(() => preview.classList.remove('sweeping'), 500);
+    },
 
-    function updatePrice(cPrice, iPrice) {
-        colorPrice = cPrice;
-        interiorPrice = iPrice;
-        const total = currentBasePrice + colorPrice + interiorPrice;
-        
-        const priceElement = document.getElementById('total-price');
-        if(priceElement) {
-            priceElement.style.opacity = 0;
+    updatePrice() {
+        const { color, interior } = this.state;
+        const price = CONFIG.basePrice 
+            + (CONFIG.prices.color[color] || 0)
+            + (CONFIG.prices.interior[interior] || 0);
+
+        if (this.elements.priceDisplay) {
+            this.elements.priceDisplay.style.opacity = 0;
             setTimeout(() => {
-                priceElement.innerText = total.toLocaleString('bg-BG').replace(',', ' ') + ' лв.';
-                priceElement.style.opacity = 1;
+                this.elements.priceDisplay.innerText = Utils.formatPrice(price);
+                this.elements.priceDisplay.style.opacity = 1;
             }, 200);
         }
     }
+};
 
-    // 3. Scroll Reveal Animation
-    const revealElements = document.querySelectorAll('.reveal');
-    const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        const elementVisible = 100;
-        
-        revealElements.forEach((reveal) => {
-            const elementTop = reveal.getBoundingClientRect().top;
-            if (elementTop < windowHeight - elementVisible) {
-                reveal.classList.add('active');
-            }
-        });
-    };
+const Animation = {
+    init() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
 
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll();
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+};
+
+// Bootstrap
+document.addEventListener('DOMContentLoaded', () => {
+    Navigation.init();
+    Configurator.init();
+    Animation.init();
 });
