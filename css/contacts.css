@@ -1,117 +1,535 @@
-.contacts-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    margin-bottom: 80px;
-}
 
-.info-card {
-    background: #111;
-    padding: 25px;
-    margin-bottom: 20px;
-    border-left: 3px solid var(--bmw-blue);
-    transition: transform 0.3s;
-}
-
-.info-card:hover {
-    transform: translateX(10px);
-}
-
-.info-card h3 {
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-    color: #fff;
-    font-family: var(--font-heading);
-}
-
-.info-card p {
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-}
-
-.map-placeholder {
-    width: 100%;
-    height: 300px;
-    background: #222;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #333;
-    color: #555;
-    font-weight: bold;
-    font-family: var(--font-heading);
-    letter-spacing: 2px;
-    border-radius: 15px;
+.page-header {
+    position: relative;
+    padding: 80px 0 60px;
+    text-align: center;
     overflow: hidden;
 }
 
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 200%;
+    background:
+        linear-gradient(135deg, transparent 30%, rgba(0, 102, 177, 0.05) 50%, transparent 70%),
+        repeating-linear-gradient(90deg,
+            rgba(255,255,255,0.01) 0px,
+            transparent 1px,
+            transparent 40px,
+            rgba(255,255,255,0.01) 41px);
+    pointer-events: none;
+    animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translateX(-50%) translateY(-10%); }
+    50% { transform: translateX(-50%) translateY(0%); }
+}
+
+.page-header h1 {
+    font-family: 'Archivo Black', 'Saira Condensed', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #ffffff 0%, #d0d0d0 50%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    animation: fadeInDown 1s ease-out;
+}
+
+.page-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--bmw-blue), transparent);
+    animation: expandWidth 1.2s ease-out 0.3s both;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes expandWidth {
+    from { width: 0; }
+    to { width: 100px; }
+}
+
+/* Main Contacts Wrapper - Asymmetric Grid */
+.contacts-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    margin-bottom: 100px;
+    position: relative;
+}
+
+.contacts-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 102, 177, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Contact Info Section */
+.contact-info {
+    position: relative;
+    z-index: 1;
+    animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Info Cards - Angular BMW Design */
+.info-card {
+    position: relative;
+    background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--bmw-blue), #00a8ff);
+    transition: width 0.4s ease;
+}
+
+.info-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--bmw-blue);
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
+    opacity: 0.15;
+}
+
+
+.info-card h3 {
+    font-family: 'Saira Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--bmw-blue);
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.info-card p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #e0e0e0;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+}
+
+.info-card p:last-child {
+    margin-bottom: 0;
+}
+
+/* Map Container - Dramatic Framing */
+.map-placeholder {
+    width: 100%;
+    height: 350px;
+    position: relative;
+    margin-top: 30px;
+    clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+    overflow: hidden;
+    border: 2px solid rgba(0, 102, 177, 0.3);
+    box-shadow:
+        inset 0 0 60px rgba(0, 0, 0, 0.8),
+        0 10px 40px rgba(0, 0, 0, 0.6);
+    transition: all 0.5s ease;
+}
+
+.map-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--bmw-blue) 0%, #00a8ff 100%);
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
+    z-index: 2;
+}
+
+.map-placeholder::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--bmw-blue) 0%, #00a8ff 100%);
+    clip-path: polygon(0 100%, 100% 100%, 0 0);
+    z-index: 2;
+}
+
+.map-placeholder:hover {
+    border-color: var(--bmw-blue);
+    box-shadow:
+        inset 0 0 60px rgba(0, 0, 0, 0.8),
+        0 10px 60px rgba(0, 102, 177, 0.3);
+}
+
+.map-placeholder iframe {
+    position: relative;
+    z-index: 1;
+    filter: grayscale(30%) contrast(1.1);
+    transition: filter 0.5s ease;
+}
+
+.map-placeholder:hover iframe {
+    filter: grayscale(0%) contrast(1.2);
+}
+
+/* Contact Form Section - Futuristic */
 .contact-form-section {
-    background: rgba(255,255,255,0.03);
-    padding: 40px;
-    border-radius: 4px;
-    border: 1px solid #222;
+    position: relative;
+    background:
+        linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(20, 20, 20, 0.9) 100%);
+    padding: 50px 45px;
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    border: 1px solid rgba(0, 102, 177, 0.2);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    animation: slideInRight 0.8s ease-out;
+    overflow: hidden;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.contact-form-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--bmw-blue);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.contact-form-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--bmw-blue);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
 }
 
 .contact-form-section h2 {
-    margin-bottom: 30px;
-    color: var(--text-primary);
-    font-size: 1.8rem;
+    font-family: 'Saira Condensed', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 20px;
 }
 
+.contact-form-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--bmw-blue), transparent);
+}
+
+/* Form Groups - Floating Style */
 .form-group {
-    margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 35px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-family: 'Saira Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 
+.form-group:focus-within label {
+    color: var(--bmw-blue);
+}
+
+/* Form Inputs - Premium Styling */
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 12px;
-    background: #0a0a0a;
-    border: 1px solid #333;
-    color: #fff;
-    font-family: var(--font-body);
+    padding: 16px 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
-    transition: all 0.3s;
-    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    font-weight: 400;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
+    background: rgba(0, 0, 0, 0.8);
     border-color: var(--bmw-blue);
-    background: #111;
-    box-shadow: 0 0 10px rgba(0, 102, 177, 0.1);
+    box-shadow:
+        0 0 0 1px var(--bmw-blue),
+        0 8px 30px rgba(0, 102, 177, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
 }
-
 .form-group select {
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3e%3cpath fill='%230066B1' d='M10 12l-6-6h12z'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 0.65em auto;
+    background-position: right 20px center;
+    background-size: 16px;
+    padding-right: 50px;
+    cursor: pointer;
+}
+
+.form-group select option {
+    background: #0a0a0a;
+    color: #ffffff;
+    padding: 10px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.6;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.contact-form .btn {
+    width: 100%;
+    padding: 18px 40px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+    border: 2px solid var(--bmw-blue);
+    color: #ffffff;
+    font-family: 'Saira Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+.contact-form .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(0, 102, 177, 0.4),
+        transparent);
+    transition: left 0.6s ease;
+}
+
+.contact-form .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: var(--bmw-blue);
+    border-radius: 50%;
+    transition: width 0.6s ease, height 0.6s ease;
+    z-index: -1;
+}
+
+.contact-form .btn:hover {
+    border-color: #00a8ff;
+    box-shadow:
+        0 0 30px rgba(0, 102, 177, 0.4),
+        0 0 60px rgba(0, 102, 177, 0.2),
+        inset 0 0 20px rgba(0, 102, 177, 0.1);
+    transform: translateY(-3px);
+}
+
+.contact-form .btn:hover::before {
+    left: 100%;
+}
+
+.contact-form .btn:hover::after {
+    width: 300%;
+    height: 400%;
+}
+
+.contact-form .btn:active {
+    transform: translateY(-1px);
+}
+
+@media (max-width: 1024px) {
+    .contacts-wrapper {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .page-header h1 {
+        font-size: 3.5rem;
+    }
 }
 
 @media (max-width: 768px) {
+    .page-header {
+        padding: 50px 0 40px;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+
     .contacts-wrapper {
-        grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 40px;
     }
-    
+
     .contact-form-section {
-        padding: 20px;
+        padding: 35px 25px;
     }
-    
+
+    .contact-form-section h2 {
+        font-size: 2rem;
+    }
+
+    .info-card {
+        padding: 25px 20px;
+    }
+
+    .map-placeholder {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
     .page-header h1 {
         font-size: 2rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 14px 16px;
+        font-size: 0.95rem;
+    }
+
+    .contact-form .btn {
+        padding: 16px 30px;
+        font-size: 1rem;
+    }
+}
+
+.info-card:nth-child(1) { animation: slideInLeft 0.8s ease-out 0.1s both; }
+.info-card:nth-child(2) { animation: slideInLeft 0.8s ease-out 0.2s both; }
+.info-card:nth-child(3) { animation: slideInLeft 0.8s ease-out 0.3s both; }
+.map-placeholder { animation: slideInLeft 0.8s ease-out 0.4s both; }
+
+.form-group:nth-child(1) { animation: fadeInUp 0.6s ease-out 0.2s both; }
+.form-group:nth-child(2) { animation: fadeInUp 0.6s ease-out 0.3s both; }
+.form-group:nth-child(3) { animation: fadeInUp 0.6s ease-out 0.4s both; }
+.form-group:nth-child(4) { animation: fadeInUp 0.6s ease-out 0.5s both; }
+.contact-form .btn { animation: fadeInUp 0.6s ease-out 0.6s both; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

@@ -1,6 +1,3 @@
-/**
- * BMW Digital Studio Main Script
- */
 
 const CONFIG = {
     basePrice: 185000,
@@ -75,7 +72,6 @@ const Configurator = {
     elements: {},
 
     init() {
-        // Cache elements
         this.elements = {
             colorOptions: document.querySelectorAll('.color-option'),
             interiorOptions: document.querySelectorAll('.interior-option'),
@@ -127,7 +123,6 @@ const Configurator = {
         const { color, interior, view } = this.state;
         const { preview, image } = this.elements;
 
-        // Animate
         preview.classList.add('sweeping');
         
         setTimeout(() => {
@@ -175,7 +170,6 @@ const Animation = {
     }
 };
 
-// Bootstrap
 document.addEventListener('DOMContentLoaded', () => {
     Navigation.init();
     Configurator.init();
