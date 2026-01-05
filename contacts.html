@@ -78,6 +78,7 @@
                         <label for="subject">Тема</label>
                         <select id="subject" name="subject">
                             <option value="test-drive">Заявка за Тест Драйв</option>
+                            <option value="event">Билети за Събитие</option>
                             <option value="config">Въпрос относно конфигурация</option>
                             <option value="service">Сервиз и поддръжка</option>
                             <option value="other">Друго</option>
@@ -100,6 +101,20 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script>
+        // Pre-select subject based on URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const subject = urlParams.get('subject');
+
+            if (subject) {
+                const subjectSelect = document.getElementById('subject');
+                if (subjectSelect) {
+                    subjectSelect.value = subject;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 
